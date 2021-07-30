@@ -1,8 +1,8 @@
-import { InMemoryUsersRepository } from "../../../users/repositories/in-memory/InMemoryUsersRepository";
-import { CreateUserUseCase } from "../../../users/useCases/createUser/CreateUserUseCase";
-import { InMemoryStatementsRepository } from "../../repositories/in-memory/InMemoryStatementsRepository";
-import { GetBalanceError } from "./GetBalanceError";
-import { GetBalanceUseCase } from "./GetBalanceUseCase";
+import { InMemoryUsersRepository } from '../../../users/repositories/in-memory/InMemoryUsersRepository';
+import { CreateUserUseCase } from '../../../users/useCases/createUser/CreateUserUseCase';
+import { InMemoryStatementsRepository } from '../../repositories/in-memory/InMemoryStatementsRepository';
+import { GetBalanceError } from './GetBalanceError';
+import { GetBalanceUseCase } from './GetBalanceUseCase';
 
 let createUserUseCase: CreateUserUseCase;
 let getBalanceUseCase: GetBalanceUseCase;
@@ -15,17 +15,16 @@ describe('Get Balance', () => {
     inMemoryUsersRepository = new InMemoryUsersRepository();
     getBalanceUseCase = new GetBalanceUseCase(
       inMemoryStatementsRepository,
-      inMemoryUsersRepository
+      inMemoryUsersRepository,
     );
     createUserUseCase = new CreateUserUseCase(inMemoryUsersRepository);
-
   });
 
   it('should be able to get balance', async () => {
     const user = await createUserUseCase.execute({
       name: 'Name Test',
       email: 'email@test.com',
-      password: '123456'
+      password: '123456',
     });
 
     const statementBalance = await getBalanceUseCase.execute({

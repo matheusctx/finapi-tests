@@ -1,6 +1,6 @@
-import { InMemoryUsersRepository } from "../../repositories/in-memory/InMemoryUsersRepository";
-import { CreateUserError } from "./CreateUserError";
-import { CreateUserUseCase } from "./CreateUserUseCase"
+import { InMemoryUsersRepository } from '../../repositories/in-memory/InMemoryUsersRepository';
+import { CreateUserError } from './CreateUserError';
+import { CreateUserUseCase } from './CreateUserUseCase';
 
 let createUserUseCase: CreateUserUseCase;
 let inMemoryUsersRepository: InMemoryUsersRepository;
@@ -15,7 +15,7 @@ describe('Create User', () => {
     const user = await createUserUseCase.execute({
       name: 'Name Test',
       email: 'Email Test',
-      password: '123456'
+      password: '123456',
     });
 
     expect(user).toHaveProperty('id');
@@ -26,13 +26,13 @@ describe('Create User', () => {
       await createUserUseCase.execute({
         name: 'Name Test 1',
         email: 'email@test.com',
-        password: '1234'
+        password: '1234',
       });
 
       await createUserUseCase.execute({
         name: 'Name Test 2',
         email: 'email@test.com',
-        password: '123456'
+        password: '123456',
       });
     }).rejects.toBeInstanceOf(CreateUserError);
   });

@@ -1,13 +1,13 @@
-import { InMemoryUsersRepository } from "../../../users/repositories/in-memory/InMemoryUsersRepository";
-import { CreateUserUseCase } from "../../../users/useCases/createUser/CreateUserUseCase";
-import { InMemoryStatementsRepository } from "../../repositories/in-memory/InMemoryStatementsRepository";
-import { CreateStatementUseCase } from "../createStatement/CreateStatementUseCase";
-import { GetStatementOperationError } from "./GetStatementOperationError";
-import { GetStatementOperationUseCase } from "./GetStatementOperationUseCase";
+import { InMemoryUsersRepository } from '../../../users/repositories/in-memory/InMemoryUsersRepository';
+import { CreateUserUseCase } from '../../../users/useCases/createUser/CreateUserUseCase';
+import { InMemoryStatementsRepository } from '../../repositories/in-memory/InMemoryStatementsRepository';
+import { CreateStatementUseCase } from '../createStatement/CreateStatementUseCase';
+import { GetStatementOperationError } from './GetStatementOperationError';
+import { GetStatementOperationUseCase } from './GetStatementOperationUseCase';
 
 enum OperationType {
-  DEPOSIT = "deposit",
-  WITHDRAW = "withdraw",
+  DEPOSIT = 'deposit',
+  WITHDRAW = 'withdraw',
 }
 
 let createUserUseCase: CreateUserUseCase;
@@ -22,12 +22,12 @@ describe('Get Statement Operation', () => {
     inMemoryUsersRepository = new InMemoryUsersRepository();
     getStatementOperationUseCase = new GetStatementOperationUseCase(
       inMemoryUsersRepository,
-      inMemoryStatementsRepository
+      inMemoryStatementsRepository,
     );
     createStatementUseCase = new CreateStatementUseCase(
       inMemoryUsersRepository,
-      inMemoryStatementsRepository
-    )
+      inMemoryStatementsRepository,
+    );
     createUserUseCase = new CreateUserUseCase(inMemoryUsersRepository);
   });
 
@@ -35,19 +35,19 @@ describe('Get Statement Operation', () => {
     const user = await createUserUseCase.execute({
       name: 'Name Test',
       email: 'email@test.com',
-      password: '123456'
+      password: '123456',
     });
 
     const statement = await createStatementUseCase.execute({
       user_id: user.id!,
       type: OperationType.DEPOSIT,
-      description: "deposit test",
+      description: 'deposit test',
       amount: 300,
     });
 
     const statementOperation = await getStatementOperationUseCase.execute({
       user_id: user.id!,
-      statement_id: statement.id!
+      statement_id: statement.id!,
     });
 
     expect(statementOperation.type).toBe('deposit');
@@ -67,7 +67,7 @@ describe('Get Statement Operation', () => {
       const user = await createUserUseCase.execute({
         name: 'Name Test',
         email: 'email@test.com',
-        password: '123456'
+        password: '123456',
       });
 
       await getStatementOperationUseCase.execute({

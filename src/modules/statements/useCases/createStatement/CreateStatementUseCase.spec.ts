@@ -1,12 +1,12 @@
-import { InMemoryUsersRepository } from "../../../users/repositories/in-memory/InMemoryUsersRepository";
-import { CreateUserUseCase } from "../../../users/useCases/createUser/CreateUserUseCase";
-import { InMemoryStatementsRepository } from "../../repositories/in-memory/InMemoryStatementsRepository";
-import { CreateStatementError } from "./CreateStatementError";
-import { CreateStatementUseCase } from "./CreateStatementUseCase";
+import { InMemoryUsersRepository } from '../../../users/repositories/in-memory/InMemoryUsersRepository';
+import { CreateUserUseCase } from '../../../users/useCases/createUser/CreateUserUseCase';
+import { InMemoryStatementsRepository } from '../../repositories/in-memory/InMemoryStatementsRepository';
+import { CreateStatementError } from './CreateStatementError';
+import { CreateStatementUseCase } from './CreateStatementUseCase';
 
 enum OperationType {
-  DEPOSIT = "deposit",
-  WITHDRAW = "withdraw",
+  DEPOSIT = 'deposit',
+  WITHDRAW = 'withdraw',
 }
 
 let createStatementUseCase: CreateStatementUseCase;
@@ -21,7 +21,7 @@ describe('Create Statement', () => {
     createUserUseCase = new CreateUserUseCase(inMemoryUsersRepository);
     createStatementUseCase = new CreateStatementUseCase(
       inMemoryUsersRepository,
-      inMemoryStatementsRepository
+      inMemoryStatementsRepository,
     );
   });
 
@@ -29,14 +29,14 @@ describe('Create Statement', () => {
     const user = await createUserUseCase.execute({
       name: 'Name Test',
       email: 'email@test.com',
-      password: '123456'
+      password: '123456',
     });
 
     const statement = await createStatementUseCase.execute({
-      user_id: user.id!, 
-      type: OperationType.DEPOSIT, 
-      amount: 300, 
-      description: 'Deposit description'
+      user_id: user.id!,
+      type: OperationType.DEPOSIT,
+      amount: 300,
+      description: 'Deposit description',
     });
 
     expect(statement).toHaveProperty('id');
@@ -48,7 +48,7 @@ describe('Create Statement', () => {
         user_id: 'non-existent-id',
         type: OperationType.DEPOSIT,
         amount: 300,
-        description: "Deposit description"
+        description: 'Deposit description',
       });
     }).rejects.toBeInstanceOf(CreateStatementError.UserNotFound);
   });
@@ -58,14 +58,14 @@ describe('Create Statement', () => {
       const user = await createUserUseCase.execute({
         name: 'Name Test',
         email: 'email@test.com',
-        password: '123456'
+        password: '123456',
       });
-  
+
       await createStatementUseCase.execute({
-        user_id: user.id!, 
-        type: OperationType.WITHDRAW, 
-        amount: 300, 
-        description: 'Withdraw description'
+        user_id: user.id!,
+        type: OperationType.WITHDRAW,
+        amount: 300,
+        description: 'Withdraw description',
       });
     }).rejects.toBeInstanceOf(CreateStatementError.InsufficientFunds);
   });
